@@ -1,0 +1,635 @@
+<title>ذرى THURA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: fixed parallax canyon behind everything; hero logo scrolls away over it, ticker strip overlaps the hero base, then a 4-column newsroom (section rail / Al Arabiya Saudi lead / wire list / trending + tools), channel feed with tabs, indices table. RTL, single dark desert-dusk look. */
+:root{
+  --bg:#0d0a08;
+  --panel:rgba(22,16,12,.74);
+  --panel-solid:#17110d;
+  --line:rgba(226,184,130,.18);
+  --fg:#f3e9da;
+  --muted:#b3a18b;
+  --gold:#e8bb88;
+  --gold-2:#c98a4b;
+  --up:#3ecf7a;
+  --down:#ef4c4c;
+  --flat:#bdb6ab;
+  --f-body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --f-logo:"Aref Ruqaa","Amiri",serif;
+  --f-latin:"Cinzel","Times New Roman",serif;
+  --gutter:clamp(16px,3vw,44px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65;direction:rtl;margin:0;padding-inline:var(--gutter);padding-block:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-inline:calc(-1*var(--gutter));padding:12px var(--gutter);display:flex;align-items:center;gap:26px;background:linear-gradient(180deg,rgba(13,10,8,.72),rgba(13,10,8,.28));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand svg{width:46px;height:30px}
+.brand b{font-family:var(--f-logo);font-size:34px;font-weight:700;line-height:1;color:var(--gold)}
+.brand i{display:block;font:normal 500 9px/1 var(--f-latin);letter-spacing:.5em;color:var(--muted);margin-top:4px}
+nav.main{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+nav.main a{padding:8px 14px;border-radius:8px;white-space:nowrap;color:#d3c3ad;font-size:14.5px;position:relative;transition:color .2s}
+nav.main a:hover{color:#fff}
+nav.main a.on{color:var(--gold)}
+nav.main a.on::after{content:"";position:absolute;inset-inline:14px;bottom:0;height:2px;background:var(--gold)}
+.search{display:flex;align-items:center;gap:8px;width:min(300px,26vw);padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.34);flex:none}
+.search input{all:unset;flex:1;min-width:0;font-size:13.5px;color:var(--fg)}
+.search input::placeholder{color:var(--muted)}
+.search svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.8}
+
+/* hero */
+.hero{position:relative;height:clamp(440px,52vw,620px);margin-inline:calc(-1*var(--gutter))}
+.hero-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-bottom:70px;will-change:transform,opacity}
+.mark{width:clamp(150px,21vw,260px);height:auto;filter:drop-shadow(0 6px 24px rgba(0,0,0,.45))}
+.hero h1{margin:-6px 0 0;font-family:var(--f-logo);font-weight:700;font-size:clamp(64px,10vw,118px);line-height:1.1;color:#f5dcb9;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero .latin{font:500 clamp(18px,2.4vw,28px)/1 var(--f-latin);letter-spacing:.7em;margin-inline-end:-.7em;color:#efd5b1;margin-top:2px}
+.hero .tag-line{margin:20px 0 0;font-size:clamp(16px,1.9vw,21px);font-weight:300;color:#ecd9be}
+.hero .tag-line::after{content:"";display:block;width:44px;height:1px;background:var(--gold);margin:14px auto 0;opacity:.7}
+.idx{position:absolute;inset-inline-end:var(--gutter);top:26%;display:flex;flex-direction:column;gap:10px;font-size:13px}
+.idx a{color:#cdbca4;padding-inline-end:16px;position:relative;opacity:.8;transition:color .2s,opacity .2s}
+.idx a::before{content:"";position:absolute;inset-inline-end:0;top:50%;width:6px;height:6px;border-radius:50%;background:currentColor;transform:translateY(-50%);opacity:.5}
+.idx a.on{color:var(--gold);opacity:1}
+.idx a.on::before{opacity:1;box-shadow:0 0 10px var(--gold)}
+.see{position:absolute;inset-inline-start:var(--gutter);top:34%;font-size:clamp(15px,1.5vw,19px);font-weight:300;line-height:1.5;color:#ecd9be;border-inline-start:1px solid var(--line);padding-inline-start:14px}
+
+/* ticker */
+.ticker{position:relative;z-index:2;margin-top:-54px;display:flex;border:1px solid var(--line);border-radius:14px;background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow-x:auto;scrollbar-width:none}
+.tk{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-inline-start:1px solid var(--line);flex:1 0 176px}
+.tk:first-child{border-inline-start:0}
+.tk small{display:block;font-size:12px;color:var(--muted);letter-spacing:.03em}
+.tk strong{display:block;font-size:19px;font-weight:600;line-height:1.3}
+.chg{font-size:13px;font-weight:500}
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--flat)}
+.tk svg{width:68px;height:34px;flex:none}
+.all{flex:none;display:flex;align-items:center;padding:0 16px}
+.all a{white-space:nowrap;padding:9px 18px;border:1px solid var(--gold-2);border-radius:999px;font-size:13.5px;color:var(--gold)}
+.all a:hover{background:rgba(232,187,136,.1)}
+
+/* cards */
+.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden}
+.room{margin-top:26px;display:grid;gap:18px;grid-template-columns:200px minmax(0,1.5fr) minmax(0,1fr) 260px;align-items:start}
+.rail{padding:10px;display:flex;flex-direction:column;gap:2px}
+.rail a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#cdbca4;font-size:14.5px;transition:background .2s,color .2s}
+.rail a svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;flex:none}
+.rail a:hover{background:rgba(232,187,136,.09);color:#fff}
+.rail a.on{background:linear-gradient(270deg,rgba(232,187,136,.22),rgba(232,187,136,.06));color:var(--gold);box-shadow:inset 0 0 0 1px rgba(232,187,136,.5)}
+
+.src{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gold)}
+.src::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.tagp{display:inline-block;font-size:12px;padding:2px 12px;border:1px solid rgba(232,187,136,.55);border-radius:999px;color:var(--gold);background:rgba(13,10,8,.6)}
+
+.lead .pic{position:relative;aspect-ratio:16/8;overflow:hidden}
+.lead .pic canvas{position:absolute;inset:0;width:100%;height:100%}
+.lead .pic .tagp{position:absolute;inset-inline-start:16px;bottom:14px}
+.lead .body{padding:16px 20px 20px}
+.lead h2{margin:6px 0 8px;font-size:clamp(20px,2vw,25px);line-height:1.5;font-weight:600;text-wrap:balance}
+.lead h2 a:hover{color:var(--gold)}
+.lead ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.lead li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;display:flex;justify-content:space-between;gap:12px}
+.lead li a{min-width:0}
+.lead li a:hover{color:var(--gold)}
+.lead li time{color:var(--muted);font-size:12px;white-space:nowrap}
+.lead .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);font-size:12.5px}
+
+.wire{display:flex;flex-direction:column}
+.wire a{display:flex;gap:14px;padding:14px;border-top:1px solid var(--line);transition:background .2s}
+.wire a:first-child{border-top:0}
+.wire a:hover{background:rgba(232,187,136,.07)}
+.wire .th{width:92px;height:70px;border-radius:8px;overflow:hidden;flex:none}
+.wire .th svg{display:block;width:100%;height:100%}
+.wire .t{min-width:0;display:flex;flex-direction:column;gap:2px}
+.wire h3{margin:0;font-size:14px;line-height:1.55;font-weight:500}
+.wire time{font-size:12px;color:var(--muted)}
+
+.side{display:flex;flex-direction:column;gap:18px}
+.side h4{margin:0;padding:14px 16px 6px;font-size:15px;font-weight:600}
+.topics{list-style:none;margin:0;padding:0 16px 12px}
+.topics li{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;color:#cdbca4}
+.topics li:first-child{border-top:0}
+.topics .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:rgba(232,187,136,.15);color:var(--gold);flex:none}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:6px 14px 14px}
+.tools button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.26);font-size:11.5px;color:#cdbca4;transition:border-color .2s,color .2s}
+.tools button:hover{border-color:var(--gold);color:#fff}
+.tools svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.6}
+
+/* sections */
+.sec-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:44px 0 14px}
+.sec-h h2{margin:0;font-size:22px;font-weight:600;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.sec-h h2 span{color:var(--gold);margin-inline-end:6px}
+.sec-h .stamp{font-size:12.5px;color:var(--muted)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs button{background:none;border:0;padding:6px 14px;font-size:14px;color:#cdbca4;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--gold);border-color:var(--gold)}
+
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.fi{display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color .2s,transform .2s}
+.fi:hover{border-color:rgba(232,187,136,.55);transform:translateY(-2px)}
+.fi h3{margin:0;font-size:15px;line-height:1.6;font-weight:500;flex:1}
+.fi .row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
+.chan-aj{color:#f0a04a}.chan-sk{color:#6fb4ee}.chan-ar{color:var(--gold)}.chan-ab{color:#7fd0c0}.chan-bb{color:#b9a2f0}.chan-cnbc{color:#8fd07a}.chan-mw{color:#7fb0f0}.chan-cnn{color:#f07a7a}.chan-nyt{color:#d8d2c6}
+.chan-tabs{max-width:100%}
+.fi .src::before{background:currentColor}
+
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{font-weight:400;font-size:12.5px;color:var(--muted);text-align:start;padding:12px 18px;border-bottom:1px solid var(--line)}
+td{padding:12px 18px;border-top:1px solid var(--line);font-size:14.5px}
+tbody tr:first-child td{border-top:0}
+tbody tr:hover{background:rgba(232,187,136,.06)}
+td.nm{display:flex;align-items:center;gap:12px;font-weight:500}
+.dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 9px/1 var(--f-latin);background:#3a2a1c;color:var(--gold);flex:none}
+td svg{width:80px;height:26px;display:block}
+td.r,th.r{text-align:end}
+
+footer{margin-top:48px;padding-block:28px 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:13px}
+footer span{max-width:70ch}
+
+@media (max-width:1180px){
+  .room{grid-template-columns:200px minmax(0,1fr) minmax(0,1fr)}
+  .side{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}
+}
+@media (max-width:860px){
+  .search,.see,.idx{display:none}
+  .room{grid-template-columns:1fr}
+  .rail{flex-direction:row;overflow-x:auto;scrollbar-width:none}
+  .rail a{white-space:nowrap}
+  .side{grid-template-columns:1fr}
+  .top{gap:14px}
+  .all{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1da"/><stop offset="1" stop-color="#d9a972"/></linearGradient>
+    <symbol id="peak" viewBox="0 0 120 80">
+      <path d="M2 74 L58 6 Q61 3 64 7 L74 24 L62 22 L40 74 Z" fill="url(#gm)"/>
+      <path d="M118 74 L74 24 L88 30 Q92 32 94 36 Z" fill="url(#gm)" opacity=".85"/>
+      <path d="M40 74 L66 36 L84 74 Z" fill="url(#gm)" opacity=".5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header class="top">
+  <a class="brand" href="#top" aria-label="ذرى THURA">
+    <svg viewBox="0 0 120 80" aria-hidden="true"><use href="#peak"/></svg>
+    <span><b>ذرى</b><i>THURA</i></span>
+  </a>
+  <nav class="main" aria-label="القائمة الرئيسية">
+    <a class="on" href="#top">الرئيسية</a>
+    <a href="#news">الأخبار</a>
+    <a href="#channels">القنوات</a>
+    <a href="#markets">الأسواق</a>
+    <a href="#news">السعودية</a>
+    <a href="#channels">العالم</a>
+    <a href="#markets">المؤشرات</a>
+    <a href="#tools">الأدوات</a>
+  </nav>
+  <label class="search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="q" type="search" placeholder="ابحث عن أخبار، شركات، مؤشرات…" aria-label="بحث في العناوين">
+  </label>
+</header>
+
+<section class="hero" id="top">
+  <div class="idx" id="idx" aria-label="التنقل داخل الصفحة">
+    <a href="#markets" data-s="markets">الأسواق</a>
+    <a href="#news" data-s="news">السعودية</a>
+    <a href="#channels" data-s="channels">العالم</a>
+    <a href="#tools" data-s="tools">أدوات</a>
+  </div>
+  <div class="see">نرى<br>ما وراء<br>الأرقام</div>
+  <div class="hero-in" id="heroIn">
+    <svg class="mark" viewBox="0 0 120 80" aria-hidden="true"><use href="#peak"/></svg>
+    <h1>ذرى</h1>
+    <div class="latin">THURA</div>
+    <p class="tag-line">مستقبل أوضح، اقتصاد أكثر وعيًا</p>
+  </div>
+</section>
+
+<section class="ticker" id="ticker" aria-label="المؤشرات"></section>
+
+<main class="room" id="news">
+  <aside class="card rail" aria-label="الأقسام">
+    <a class="on" href="#news"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>آخر الأخبار</a>
+    <a href="#news"><svg viewBox="0 0 24 24"><path d="M12 3c2 3 5 4 5 8a5 5 0 01-10 0c0-4 3-5 5-8zM12 16v5"/></svg>السعودية</a>
+    <a href="#markets"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 16l4-5 3 3 6-8"/></svg>الأسواق</a>
+    <a href="#channels"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>العالم</a>
+    <a href="#channels"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 21h8M12 18v3"/></svg>القنوات</a>
+    <a href="#markets"><svg viewBox="0 0 24 24"><path d="M4 21V8l6-3v16M10 21V11l6-2v12M16 21h4V13"/></svg>الشركات</a>
+    <a href="#markets"><svg viewBox="0 0 24 24"><path d="M5 20V10M11 20V4M17 20v-7M3 20h18"/></svg>التحليل</a>
+    <a href="#tools"><svg viewBox="0 0 24 24"><path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6v14"/></svg>تعلّم</a>
+    <a href="#tools"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg>أدوات</a>
+  </aside>
+
+  <article class="card lead" id="lead"></article>
+  <div class="card wire" id="wire"></div>
+
+  <div class="side">
+    <section class="card" aria-labelledby="tp">
+      <h4 id="tp">أبرز المواضيع</h4>
+      <ul class="topics">
+        <li><span class="n">1</span>#حلف_مكة</li>
+        <li><span class="n">2</span>#مضيق_هرمز</li>
+        <li><span class="n">3</span>#أسعار_النفط</li>
+        <li><span class="n">4</span>#فجر_اليمن</li>
+        <li><span class="n">5</span>#منتدى_الطاقة_الدولي</li>
+      </ul>
+    </section>
+    <section class="card" id="tools" aria-labelledby="tl">
+      <h4 id="tl">أدوات سريعة</h4>
+      <div class="tools">
+        <button><svg viewBox="0 0 24 24"><path d="M5 20V10M11 20V4M17 20v-7"/></svg>حاسبة التضخم</button>
+        <button><svg viewBox="0 0 24 24"><path d="M6 18L18 6"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>حاسبة الفائدة</button>
+        <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>مقارنة الدول</button>
+        <button><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1.2 1.1-2 2.5-2s2.5.8 2.5 2-1.1 1.8-2.5 2-2.5.9-2.5 2.1 1.1 2 2.5 2 2.5-.8 2.5-2"/></svg>تحويل العملات</button>
+        <button><svg viewBox="0 0 24 24"><path d="M3 18l6-6 4 4 8-9M15 7h6v6"/></svg>حاسبة النمو</button>
+        <button><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg>حاسبة GPA</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<section id="channels">
+  <div class="sec-h">
+    <h2><span>◆</span>أخبار القنوات</h2>
+    <span class="stamp" id="stamp"></span>
+    <div class="tabs" role="tablist" id="ctabs">
+      <button role="tab" aria-selected="true" data-k="all">كل القنوات</button>
+      <button role="tab" aria-selected="false" data-k="ar">العربية السعودية</button>
+      <button role="tab" aria-selected="false" data-k="aj">الجزيرة</button>
+      <button role="tab" aria-selected="false" data-k="sk">سكاي نيوز عربية</button>
+      <button role="tab" aria-selected="false" data-k="ab">الشرق مع بلومبرغ</button>
+      <button role="tab" aria-selected="false" data-k="bb">Bloomberg</button>
+      <button role="tab" aria-selected="false" data-k="cnbc">CNBC</button>
+      <button role="tab" aria-selected="false" data-k="mw">MarketWatch</button>
+      <button role="tab" aria-selected="false" data-k="cnn">CNN</button>
+      <button role="tab" aria-selected="false" data-k="nyt">نيويورك تايمز</button>
+    </div>
+  </div>
+  <div class="feed" id="feed"></div>
+</section>
+
+<section id="markets">
+  <div class="sec-h">
+    <h2><span>◆</span>المؤشرات العالمية</h2>
+    <div class="tabs" role="tablist" id="tabs">
+      <button role="tab" aria-selected="true" data-k="all">الكل</button>
+      <button role="tab" aria-selected="false" data-k="stock">الأسهم</button>
+      <button role="tab" aria-selected="false" data-k="fx">العملات</button>
+      <button role="tab" aria-selected="false" data-k="cmd">السلع</button>
+    </div>
+  </div>
+  <div class="card tbl">
+    <table>
+      <thead><tr><th>المؤشر</th><th class="r">السعر</th><th class="r">التغير</th><th class="r">آخر 30 يومًا</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <span>العناوين لقطة من العربية والجزيرة وسكاي نيوز عربية والشرق مع بلومبرغ وBloomberg وCNBC وMarketWatch وCNN كما ظهرت صباح 6 أكتوبر 2026. عناوين القنوات الأجنبية ملخصة بالعربية، وكل بطاقة تفتح الخبر عند مصدره. أرقام الأسواق أمثلة توضيحية.</span>
+  <span>مستقبل أوضح، اقتصاد أكثر وعيًا</span>
+</footer>
+
+<script src="data/news.js"></script>
+<script>
+(function(){
+  var AR="https://www.alarabiya.net/", JZ="https://www.aljazeera.net/", SK="https://www.skynewsarabia.com/";
+  /* ---------- news data (snapshot, 6 Oct 2026) ---------- */
+  var saudi=[ /* Al Arabiya, Saudi Today section only */
+    {h:"حلف مكة الدفاعي: نشر القدرات العسكرية في السعودية",u:AR+"saudi-today/2026/10/05/حلف-مكة-الدفاعي-نشر-القدرات-العسكرية-في-السعودية",t:"منذ 16 ساعة",k:"السعودية"},
+    {h:"السعودية: بذلنا جهودا لدعم السلام في اليمن والحوثي اختار التصعيد",u:AR+"saudi-today/2026/10/05/السعودية-بذلنا-جهودا-لدعم-السلام-في-اليمن-والحوثي-اختار-التصعيد",t:"منذ 16 ساعة",k:"السعودية"},
+    {h:"الملك سلمان يوجه بالبدء بتصحيح أوضاع اليمنيين الموجودين في المملكة",u:AR+"saudi-today/2026/10/05/الملك-سلمان-يوجه-بالبدء-بتصحيح-اوضاع-اليمنيين-الموجودين-في-المملكة-بصورة-غير-نظامية",t:"منذ يوم",k:"السعودية"},
+    {h:"السعودية تستضيف الاجتماع الوزاري الـ17 لمنتدى الطاقة الدولي",u:AR+"saudi-today/2026/10/06/السعودية-تستضيف-الاجتماع-الوزاري-الـ17-لمنتدى-الطاقة-الدولي",t:"منذ 14 ساعة",k:"الطاقة"},
+    {h:"السعودية.. 30% ارتفاعاً في حالات العناية المركزة المرتبطة بالعدوى التنفسية",u:AR+"saudi-today/2026/10/06/السعودية-ارتفاع-30-في-حالات-العناية-المركزة-المرتبطة",t:"اليوم",k:"صحة"},
+    {h:"الطيران المدني السعودي: اعتداءان استهدفا مطاري جازان ونجران",u:AR+"aswaq/travel-and-tourism/2026/10/06/الطيران-المدني-السعودي-مطارا-جازان-ونجران-تعرضا-مساء-امس-لاعتداءين-استهدفا-مرافقهما",t:"اليوم",k:"الطيران"}
+  ];
+  var aswaq=[ /* Al Arabiya, markets section, Saudi-related business */
+    {h:"رئيس أرامكو: الشحن البحري يتعرض لضغوط شديدة وهناك ضيق بسلاسل التوريد",u:AR+"aswaq/oil-and-gas/2026/10/05/رئيس-ارامكو-الشحن-البحري-يتعرض-لضغوط-شديدة-وهناك-ضيق-بسلاسل-التوريد",t:"منذ 12 ساعة",k:"النفط والطاقة",i:"oil"},
+    {h:"الدرعية تعلن عن عقود إنشائية بقيمة 747 مليون دولار لمشاريع في ميدان الدرعية",u:AR+"aswaq/companies/2026/10/05/الدرعية-تعلن-عن-عقود-انشائية-بقيمة-747-مليون-دولار-لمشاريع-في-ميدان-الدرعية",t:"منذ 9 ساعات",k:"الشركات",i:"city"},
+    {h:"سيطرة القوات الحكومية اليمنية على باب المندب.. ماذا يعني لأسواق الطاقة؟",u:AR+"aswaq/special-stories/2026/10/05/سيطرة-القوات-الحكومية-اليمنية-على-باب-المندب-ماذا-يعني-لاسواق-الطاقة-",t:"منذ 10 ساعات",k:"أسواق",i:"gold"},
+    {h:"غولدمان ساكس للحكومات: خفضوا الإنفاق لكبح قفزة تكاليف الاقتراض",u:AR+"aswaq/special-stories/2026/10/05/غولدمان-ساكس-للحكومات-خف-ضوا-الانفاق-لكبح-قفزة-تكاليف-الاقتراض",t:"منذ 11 ساعة",k:"اقتصاد عالمي",i:"bank"}
+  ];
+  var aj=[
+    {h:"ما رسائل تفعيل «حلف مكة» في هذا التوقيت وما انعكاساته على أمن المنطقة؟",u:JZ+"politics/2026/10/6/%d9%85%d8%a7-%d8%b1%d8%b3%d8%a7%d8%a6%d9%84-%d8%aa%d9%81%d8%b9%d9%8a%d9%84-%d8%ad%d9%84%d9%81-%d9%85%d9%83%d8%a9-%d9%81%d9%8a-%d9%87%d8%b0%d8%a7-%d8%a7%d9%84%d8%aa%d9%88%d9%82%d9%8a%d8%aa",t:"منذ 3 ساعات",k:"سياسة"},
+    {h:"الخارجية القطرية: ندعم أي مبادرة تتخذها دول المنطقة بما فيها حلف مكة",u:JZ+"news/2026/10/6/%d8%b9%d8%a7%d8%ac%d9%84-%d8%a7%d9%84%d8%ae%d8%a7%d8%b1%d8%ac%d9%8a%d8%a9-%d8%a7%d9%84%d9%82%d8%b7%d8%b1%d9%8a%d8%a9-%d9%86%d8%af%d8%b9%d9%85-%d8%a3%d9%8a-%d9%85%d8%a8%d8%a7%d8%af%d8%b1%d8%a9",t:"منذ 3 ساعات",k:"عاجل"},
+    {h:"جائزة نوبل للفيزياء 2026 تذهب إلى عالم رصد «رسل الكون الشبحية»",u:JZ+"science/2026/10/6/%d9%86%d9%88%d8%a8%d9%84-%d9%84%d9%84%d9%81%d9%8a%d8%b2%d9%8a%d8%a7%d8%a1-2026-%d8%aa%d8%b0%d9%87%d8%a8-%d8%a5%d9%84%d9%89-%d8%b9%d8%a7%d9%84%d9%85-%d8%a8%d9%84%d8%ac%d9%8a%d9%83%d9%8a",t:"منذ 3 ساعات",k:"علوم"},
+    {h:"كوكسون يحذر من الذكاء الاصطناعي أمام مجلس مدينة نيويورك",u:JZ+"tech/2026/10/6/%d8%a8%d8%b9%d8%af-%d8%b4%d9%87%d8%b1-%d9%85%d9%86-%d8%a7%d8%b3%d8%aa%d9%82%d8%a7%d9%84%d8%aa%d9%87-%d9%83%d9%88%d9%83%d8%b3%d9%88%d9%86-%d9%8a%d8%ad%d8%b0%d8%b1-%d9%85%d9%86",t:"منذ 4 ساعات",k:"تكنولوجيا"},
+    {h:"هل يتحول حراك الطلاب في فرنسا إلى «ائتلاف للغضب»؟",u:JZ+"politics/2026/10/6/%d9%87%d9%84-%d9%8a%d8%aa%d8%ad%d9%88%d9%84-%d8%ad%d8%b1%d8%a7%d9%83-%d8%a7%d9%84%d8%b7%d9%84%d8%a7%d8%a8-%d8%a5%d9%84%d9%89",t:"منذ 3 ساعات",k:"سياسة"},
+    {h:"أندية وفنادق وعقارات.. كيف يستعد ميسي لحياته بعد الاعتزال؟",u:JZ+"sport/2026/10/6/%d9%85%d9%8a%d8%b3%d9%8a-%d8%a8%d8%b9%d8%af-%d8%a7%d9%84%d8%a7%d8%b9%d8%aa%d8%b2%d8%a7%d9%84-%d8%a7%d9%84%d8%a3%d8%b1%d8%ac%d9%86%d8%aa%d9%8a%d9%86",t:"منذ 3 ساعات",k:"رياضة"}
+  ];
+  var sk=[
+    {h:"الحرس الثوري يهدد ناقلة بالاستهداف في مضيق هرمز",u:SK+"middle-east/1896363",t:"أمس",k:"الشرق الأوسط"},
+    {h:"أدنوك توقع اتفاقية لتوريد مليوني طن من الغاز المسال لتايلاند",u:SK+"business/1896359",t:"أمس",k:"اقتصاد"},
+    {h:"ماسك يقود موجة الثراء العالمية.. والتكنولوجيا تبتلع المكاسب",u:SK+"business/1896370",t:"أمس",k:"اقتصاد"},
+    {h:"ولي عهد أبوظبي يصل إلى مدينة العقبة في زيارة عمل",u:SK+"business/1896381",t:"أمس",k:"اقتصاد"},
+    {h:"3 علماء يفوزون بنوبل في الطب.. وهذا إسهامهم",u:SK+"technology/1896345",t:"أمس",k:"علوم"},
+    {h:"عشرات القتلى والمفقودين في تصادم قاربين بنهر الكونغو",u:SK+"world/1896369",t:"أمس",k:"العالم"}
+  ];
+
+  /* international + financial channels (Arabic summaries of the original headlines, each links to the source) */
+  var cnn=[
+    {h:"تحليل: واشنطن تضيّق الخناق على إيران ولا مؤشر على تراجع طهران، ومضيق هرمز في قلب الحسابات",u:"https://www.cnn.com/2026/10/06/business/iran-economy-blockade-strait-of-hormuz-oil",t:"اليوم",k:"اقتصاد"},
+    {h:"وول ستريت تزدهر بأرباح الذكاء الاصطناعي، وقفزة العوائد قد تغيّر المشهد",u:"https://www.cnn.com/2026/10/06/business/wall-street-profits-ai-boom",t:"اليوم",k:"أسواق"},
+    {h:"ترامب يوقّع أمرًا تنفيذيًا يستهدف خفض أسعار الديزل",u:"https://cnn.com/2026/10/05/business/trump-diesel-prices-executive-order",t:"أمس",k:"طاقة"},
+    {h:"ديزني ترفع أسعار حدائقها كل عام، فكيف تتجنب إبعاد العائلات؟",u:"https://www.cnn.com/2026/10/06/business/disney-theme-parks-prices-affordability",t:"اليوم",k:"شركات"}
+  ];
+  var bb=[
+    {h:"رئيس أرامكو: هامش إمدادات النفط العالمية ضئيل بشكل مقلق",u:"https://www.bloomberg.com/news/articles/2026-10-05/global-oil-supply-buffer-running-scarily-thin-aramco-ceo-says",t:"أمس",k:"نفط"},
+    {h:"موجة الصعود الأوسع في الأسهم تصطدم بعقبة اقتصادية",u:"https://www.bloomberg.com/news/articles/2026-10-05/broadening-rally-in-stocks-hits-an-economic-roadblock",t:"أمس",k:"أسهم"},
+    {h:"أصول الأسواق الناشئة ترتفع مع تراجع رهانات رفع الفائدة الأمريكية وهبوط النفط",u:"https://www.bloomberg.com/news/articles/2026-10-05/emerging-market-assets-climb-as-fed-hike-bets-cool-oil-drops",t:"أمس",k:"أسواق"},
+    {h:"آخر أخبار وتحليلات سوق النفط ليوم 6 أكتوبر",u:"https://www.bloomberg.com/news/articles/2026-10-05/latest-oil-market-news-and-analysis-for-oct-6",t:"اليوم",k:"نفط"}
+  ];
+  var cnbc=[
+    {h:"الصين تغلق 670 مصرفًا في رقم قياسي، ومخاوف جديدة من النفط والذكاء الاصطناعي",u:"https://cnbc.com/2026/10/06/cnbc-daily-open-china-shuts-down-record-670-banks-new-worries-over-oil-and-ai-.html",t:"اليوم",k:"أسواق"},
+    {h:"أبرز قصص الأسهم المرشحة لتحريك السوق في جلسة الثلاثاء",u:"https://cnbc.com/2026/10/05/tuesdays-big-stock-stories-whats-likely-to-move-the-market.html",t:"أمس",k:"أسهم"},
+    {h:"الأسهم البرازيلية تقفز مع ترجيح فوز بولسونارو بالرئاسة",u:"https://cnbc.com/2026/10/05/brazilian-stocks-jump-bolsonaro-now-heavy-favorite-to-win-presidency.html",t:"أمس",k:"أسواق ناشئة"},
+    {h:"تغطية مباشرة لسوق الأسهم الأمريكية، 5 أكتوبر",u:"https://www.cnbc.com/2026/10/05/stock-market-today-live-updates.html",t:"أمس",k:"مباشر"}
+  ];
+  var mw=[
+    {h:"سهم إنتل يتراجع بعد تلميح ماسك إلى شريك إضافي لمشروع الرقائق الضخم",u:"https://www.marketwatch.com/story/musk-hints-tsmc-may-join-his-mega-chip-venture-and-intels-stock-is-taking-a-hit-61c67ef9",t:"أمس",k:"أسهم"},
+    {h:"صفقة برمجيات بـ23 مليار دولار بأدنى تقييم في عقد مع استحواذ رابح في الذكاء الاصطناعي على خاسر",u:"https://www.marketwatch.com/story/this-23-billion-software-deal-was-struck-at-a-decade-low-valuation-as-ai-winner-takes-out-loser-aa18f477",t:"أمس",k:"صفقات"},
+    {h:"تراجع الأجور وارتفاع الطاقة والتضخم.. ملامح تشبه سبعينيات القرن الماضي",u:"https://www.marketwatch.com/story/falling-wages-soaring-energy-prices-and-inflation-its-beginning-to-look-a-lot-like-the-1970s-d645cbca",t:"أمس",k:"اقتصاد"},
+    {h:"استراتيجي: اختبار واقعية للذكاء الاصطناعي قد يهبط بمؤشر S&P 500 إلى 5000",u:"https://www.marketwatch.com/story/an-ai-reality-check-may-take-the-s-p-500-to-5-000-heres-the-trades-to-make-this-strategist-says-263cf0e9",t:"أمس",k:"استراتيجية"}
+  ];
+  var ab=[ /* Asharq Bloomberg, Arabic */
+    {h:"بلاك روك: هذه رؤيتنا للفرص الاستثمارية في منطقة الخليج",u:"https://asharqbusiness.com/financing-and-investment/150354/",t:"منذ 3 ساعات",k:"استثمار"},
+    {h:"السعودية تعيد تدفقات النفط في خط شرق-غرب إلى 5.8 مليون برميل يوميًا",u:"https://asharqbusiness.com/power/150360/",t:"منذ 3 ساعات",k:"طاقة"},
+    {h:"حرب إيران تقلب توقعات البنك الدولي لاقتصادات الخليج إلى الانكماش",u:"https://asharqbusiness.com/economics/150357/",t:"منذ 4 ساعات",k:"اقتصاد"},
+    {h:"أدنوك للإمداد توسع أسطول الغاز بثلاث ناقلات بقيمة 324 مليون دولار",u:"https://asharqbusiness.com/power/150343/",t:"منذ 6 ساعات",k:"طاقة"},
+    {h:"مصر تخصص مليون متر لمشروعات سياحية متكاملة بالبحر الأحمر",u:"https://asharqbusiness.com/economics/150350/",t:"منذ 4 ساعات",k:"اقتصاد"},
+    {h:"تأخر مشروعات الغاز المسال يهدد إمدادات الكهرباء في فيتنام",u:"https://asharqbusiness.com/power/150334/",t:"منذ 6 ساعات",k:"طاقة"}
+  ];
+  var nyt=[ /* section links only: headlines were not reachable */
+    {h:"قسم الاقتصاد والأعمال في نيويورك تايمز",u:"https://www.nytimes.com/section/business",t:"قسم",k:"اقتصاد"},
+    {h:"قسم أخبار العالم في نيويورك تايمز",u:"https://www.nytimes.com/section/world",t:"قسم",k:"العالم"}
+  ];
+
+  /* ---------- live data: data/news.js (written by scripts/update.py) overrides the snapshot above ---------- */
+  function rel(iso){
+    var d=new Date(iso);if(isNaN(d))return "";
+    var m=Math.round((Date.now()-d)/60000);
+    if(m<2)return "الآن";if(m<60)return "منذ "+m+" دقيقة";
+    var h=Math.round(m/60);if(h<24)return "منذ "+h+(h===1?" ساعة":h<11?" ساعات":" ساعة");
+    var dd=Math.round(h/24);return dd===1?"أمس":"منذ "+dd+" أيام";
+  }
+  function artKey(x){
+    var s=(x.h+" "+(x.k||""));
+    if(/نفط|النفط|برنت|أوبك|الغاز|طاقة|أرامكو|أرامكو|oil/i.test(s))return "oil";
+    if(/ذهب|الذهب|gold/i.test(s))return "gold";
+    if(/بنك|مصرف|الفيدرالي|فائدة|الفائدة|عوائد|سندات/.test(s))return "bank";
+    return "city";
+  }
+  var NEWS=window.THURA_NEWS;
+  function pick(key,fallback){
+    var c=NEWS&&NEWS.channels&&NEWS.channels[key];
+    if(!c||!c.items||!c.items.length)return fallback;
+    return c.items.map(function(x){return {h:x.h,u:x.u,k:x.k,t:rel(x.t),lang:x.lang}});
+  }
+  if(NEWS){
+    saudi=pick("ar",saudi);aswaq=pick("ar_markets",aswaq);aj=pick("aj",aj);sk=pick("sk",sk);ab=pick("ab",ab);
+    bb=pick("bb",bb);cnbc=pick("cnbc",cnbc);mw=pick("mw",mw);cnn=pick("cnn",cnn);nyt=pick("nyt",nyt);
+    var sp=document.getElementById("stamp");
+    if(sp&&NEWS.updated){sp.textContent="آخر تحديث: "+new Date(NEWS.updated).toLocaleString("ar-SA",{dateStyle:"medium",timeStyle:"short"});}
+  }
+
+  /* ---------- helpers ---------- */
+  function rng(seed){var s=seed%2147483647;if(s<=0)s+=2147483646;return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  function series(seed,trend,n){var r=rng(Math.floor(seed*97+13)),a=[],y=50;for(var i=0;i<n;i++){y+=(r()-.5)*9+trend*1.1;a.push(y)}return a}
+  function spark(a,color,w,h,fill){
+    var mn=Math.min.apply(null,a),mx=Math.max.apply(null,a),sx=w/(a.length-1);
+    var pts=a.map(function(v,i){return [i*sx,h-3-((v-mn)/(mx-mn||1))*(h-8)]});
+    var d=pts.map(function(p,i){return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)}).join("");
+    var l=pts[pts.length-1];
+    return '<svg viewBox="0 0 '+w+' '+h+'" aria-hidden="true">'+(fill?'<path d="'+d+'L'+w+' '+h+'L0 '+h+'Z" fill="'+color+'" opacity=".15"/>':'')+'<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+l[0]+'" cy="'+l[1]+'" r="2.2" fill="'+color+'"/></svg>';
+  }
+  function cls(c){return c>0?"up":c<0?"down":"flat"}
+  function col(c){return c>0?"#3ecf7a":c<0?"#ef4c4c":"#bdb6ab"}
+  function fmt(v,d){return v.toLocaleString("en-US",{minimumFractionDigits:d==null?2:d,maximumFractionDigits:d==null?2:d})}
+  function pct(c){return (c>0?"+":"")+c.toFixed(2)+"%"}
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+
+  /* ---------- ticker ---------- */
+  var tickers=[
+    {n:"S&P 500",v:5792.21,c:0.62},{n:"NASDAQ",v:18426.77,c:0.78},{n:"DOW JONES",v:41276.38,c:0.51},
+    {n:"SAUDI TASI",v:11931.40,c:0.34},{n:"برنت (Brent)",v:82.14,c:-0.28,r:1},{n:"الذهب",v:2658.90,c:0.46,g:1},{n:"USD/SAR",v:3.7501,c:0,d:4}
+  ];
+  var tk=document.getElementById("ticker");
+  tk.innerHTML=tickers.map(function(t,i){
+    var g=t.g?"#e8bb88":col(t.c);
+    return '<div class="tk"><div><small class="num">'+t.n+'</small><strong class="num" data-i="'+i+'">'+fmt(t.v,t.d)+'</strong><span class="chg num '+cls(t.c)+'" data-c="'+i+'">'+pct(t.c)+'</span></div>'+spark(series(i+3,t.c,28),g,68,34,true)+'</div>';
+  }).join("")+'<div class="all"><a href="#markets">جميع المؤشرات ←</a></div>';
+  setInterval(function(){
+    tickers.forEach(function(t,i){
+      var st=t.v*0.0004*(Math.random()-.5);t.v+=st;t.c+=st/t.v*100;
+      var e=tk.querySelector('[data-i="'+i+'"]'),c=tk.querySelector('[data-c="'+i+'"]');
+      e.textContent=fmt(t.v,t.d);c.textContent=pct(t.c);c.className="chg num "+cls(t.c);
+    });
+  },2800);
+
+  /* ---------- lead (Al Arabiya Saudi only) ---------- */
+  var L=saudi[0];
+  document.getElementById("lead").innerHTML=
+    '<div class="pic"><canvas id="leadc" aria-hidden="true"></canvas><span class="tagp">السعودية</span></div>'+
+    '<div class="body"><span class="src chan-ar">العربية · السعودية اليوم</span>'+
+    '<h2><a href="'+esc(L.u)+'">'+L.h+'</a></h2>'+
+    '<ul>'+saudi.slice(1,5).map(function(s){return '<li><a href="'+esc(s.u)+'">'+s.h+'</a><time>'+s.t+'</time></li>'}).join("")+'</ul>'+
+    '<div class="meta"><span>'+L.t+'</span><a class="src" href="'+AR+'saudi-today">كل أخبار السعودية</a></div></div>';
+
+  /* ---------- wire (Al Arabiya markets) ---------- */
+  var art={
+    bank:'<rect width="96" height="72" fill="#7fa3c6"/><rect y="52" width="96" height="20" fill="#bfae94"/><path d="M10 28l38-14 38 14z" fill="#e8e2d6"/><g fill="#d9d2c4"><rect x="16" y="30" width="7" height="22"/><rect x="29" y="30" width="7" height="22"/><rect x="44" y="30" width="7" height="22"/><rect x="59" y="30" width="7" height="22"/><rect x="73" y="30" width="7" height="22"/></g>',
+    oil:'<defs><linearGradient id="o1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9863a"/><stop offset="1" stop-color="#6b2d12"/></linearGradient></defs><rect width="96" height="72" fill="url(#o1)"/><circle cx="70" cy="40" r="14" fill="#ffd08a" opacity=".6"/><rect y="58" width="96" height="14" fill="#1b0f0a"/><g stroke="#140b07" stroke-width="3" fill="#140b07"><path d="M28 58L42 28M56 58L42 28M30 52h24" fill="none"/><path d="M22 24l34 8-2 6-34-8z"/></g>',
+    gold:'<rect width="96" height="72" fill="#3a2410"/><path d="M8 54l22-14h38l-6 14z" fill="#e9b94f"/><path d="M8 54h54v14H8z" fill="#c8922e"/><path d="M40 42l20-12h30l-6 12z" fill="#f4cf6e"/><path d="M40 42h44v12H40z" fill="#d9a53a"/>',
+    city:'<defs><linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8ca8"/><stop offset="1" stop-color="#f0b979"/></linearGradient></defs><rect width="96" height="72" fill="url(#c1)"/><g fill="#2a2430"><rect x="8" y="34" width="10" height="38"/><rect x="22" y="26" width="8" height="46"/><rect x="66" y="30" width="10" height="42"/><rect x="80" y="38" width="10" height="34"/></g><path d="M38 72V12l10-6 10 6v60h-5V20l-5-4-5 4v52z" fill="#5d7690"/>'
+  };
+  document.getElementById("wire").innerHTML=aswaq.map(function(w){
+    return '<a href="'+esc(w.u)+'"><div class="th"><svg viewBox="0 0 96 72" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+art[w.i||artKey(w)]+'</svg></div><div class="t"><span class="src chan-ar">العربية · '+w.k+'</span><h3>'+w.h+'</h3><time>'+w.t+'</time></div></a>';
+  }).join("");
+
+  /* ---------- channel feed ---------- */
+  var chan={
+    ar:{n:"العربية السعودية",c:"chan-ar",d:saudi},
+    aj:{n:"الجزيرة",c:"chan-aj",d:aj},
+    sk:{n:"سكاي نيوز عربية",c:"chan-sk",d:sk},
+    ab:{n:"الشرق مع بلومبرغ",c:"chan-ab",d:ab},
+    bb:{n:"Bloomberg",c:"chan-bb",d:bb},
+    cnbc:{n:"CNBC",c:"chan-cnbc",d:cnbc},
+    mw:{n:"MarketWatch",c:"chan-mw",d:mw},
+    cnn:{n:"CNN",c:"chan-cnn",d:cnn},
+    nyt:{n:"نيويورك تايمز",c:"chan-nyt",d:nyt}
+  };
+  var feed=document.getElementById("feed"),qv="",ck="all";
+  function drawFeed(){
+    var out=[];
+    Object.keys(chan).forEach(function(k){
+      if(ck!=="all"&&ck!==k)return;
+      chan[k].d.forEach(function(x){
+        if(qv&&(x.h+x.k).indexOf(qv)<0)return;
+        out.push('<a class="fi" href="'+esc(x.u)+'"><span class="src '+chan[k].c+'">'+chan[k].n+' · '+x.k+'</span><h3 dir="auto">'+esc(x.h)+'</h3><div class="row"><span>'+x.t+'</span><span>اقرأ عند المصدر ←</span></div></a>');
+      });
+    });
+    feed.innerHTML=out.length?out.join(""):'<div class="fi"><h3>لا توجد عناوين حديثة لهذا الاختيار.</h3></div>';
+  }
+  drawFeed();
+  document.getElementById("ctabs").addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    [].forEach.call(this.children,function(x){x.setAttribute("aria-selected",x===b)});
+    ck=b.dataset.k;drawFeed();
+  });
+  document.getElementById("q").addEventListener("input",function(){qv=this.value.trim();drawFeed();
+    if(qv)document.getElementById("channels").scrollIntoView({behavior:"smooth"});});
+
+  /* ---------- indices table ---------- */
+  var idx=[
+    {n:"مؤشر تاسي",s:"TASI",v:11931.40,c:0.34,t:"stock"},{n:"S&P 500",s:"SPX",v:5792.21,c:0.62,t:"stock"},
+    {n:"NASDAQ",s:"NDX",v:18426.77,c:0.78,t:"stock"},{n:"Dow Jones",s:"DJI",v:41276.38,c:0.51,t:"stock"},
+    {n:"FTSE 100",s:"UKX",v:7993.22,c:0.28,t:"stock"},{n:"DAX",s:"DAX",v:18446.73,c:0.41,t:"stock"},
+    {n:"Nikkei 225",s:"NKY",v:38487.90,c:-0.18,t:"stock"},{n:"الذهب",s:"XAU",v:2658.90,c:0.46,t:"cmd"},
+    {n:"خام برنت",s:"BRT",v:82.14,c:-0.28,t:"cmd"},{n:"دولار / ريال",s:"USD",v:3.7501,c:0,t:"fx",d:4},
+    {n:"يورو / دولار",s:"EUR",v:1.0852,c:0.12,t:"fx",d:4}
+  ];
+  var rows=document.getElementById("rows");
+  function draw(k){
+    rows.innerHTML=idx.filter(function(x){return k==="all"||x.t===k}).map(function(x,i){
+      var g=x.s==="XAU"?"#e8bb88":col(x.c);
+      return '<tr><td class="nm"><span class="dot">'+x.s.slice(0,3)+'</span>'+x.n+'</td><td class="r num">'+fmt(x.v,x.d)+'</td><td class="r num '+cls(x.c)+'">'+pct(x.c)+'</td><td class="r">'+spark(series(i+11+Math.floor(x.v)%7,x.c,30),g,80,26,false)+'</td></tr>';
+    }).join("");
+  }
+  draw("all");
+  document.getElementById("tabs").addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    [].forEach.call(this.children,function(x){x.setAttribute("aria-selected",x===b)});
+    draw(b.dataset.k);
+  });
+
+  /* ---------- landscape engine ---------- */
+  function ridge(r,n,rough){
+    var pts=[.5+(r()-.5)*.2,.5+(r()-.5)*.2],a=1;
+    while(pts.length<n){var o=[];for(var i=0;i<pts.length-1;i++){o.push(pts[i]);o.push((pts[i]+pts[i+1])/2+(r()-.5)*a)}o.push(pts[pts.length-1]);pts=o;a*=rough}
+    return pts;
+  }
+  var LAYERS=[
+    {seed:11,base:.50,amp:.16,c1:"#a8744f",c2:"#5b3a2a",rough:.55,mesa:false,sp:.10,mass:1},
+    {seed:23,base:.60,amp:.2,c1:"#93603f",c2:"#4a2f22",rough:.55,mesa:true,sp:.22,mass:1},
+    {seed:5,base:.70,amp:.14,c1:"#744830",c2:"#2e1c14",rough:.5,mesa:true,sp:.40,mass:1},
+    {seed:41,base:.88,amp:.22,c1:"#3d2519",c2:"#120b08",rough:.5,mesa:true,sp:.70,mass:0}
+  ];
+  function buildLayer(L,li,W,H,TH){
+    var c=document.createElement("canvas");c.width=W;c.height=TH;var x=c.getContext("2d");
+    var r=rng(L.seed*7919),pts=ridge(r,257,L.rough),n=pts.length;
+    x.beginPath();x.moveTo(0,TH);
+    for(var i=0;i<n;i++){
+      var px=i/(n-1)*W,v=pts[i];
+      if(L.mesa)v=Math.round(v*7)/7*.55+v*.45;
+      var d=px/W-.5,mass=L.mass?Math.exp(-d*d*14)*.16:0;
+      x.lineTo(px,H*(L.base-(v-.5)*L.amp*2-mass));
+    }
+    x.lineTo(W,TH);x.closePath();
+    var g=x.createLinearGradient(0,H*.3,0,TH);g.addColorStop(0,L.c1);g.addColorStop(.55,L.c2);g.addColorStop(1,L.c2);
+    x.fillStyle=g;x.fill();
+    var f=x.createLinearGradient(0,H*(L.base+.02),0,H*(L.base+.22));
+    f.addColorStop(0,"rgba(240,196,148,"+(.26-li*.045)+")");f.addColorStop(1,"rgba(240,196,148,0)");
+    x.globalCompositeOperation="source-atop";x.fillStyle=f;x.fillRect(0,H*(L.base+.02),W,H*.22);
+    return c;
+  }
+
+  /* fixed page background, moves with scroll */
+  var bg=document.getElementById("bg"),bx=bg.getContext("2d"),lay=[],W=0,H=0,dpr=1,fogC=null;
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function build(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.max(window.innerWidth,320);H=Math.max(window.innerHeight,480);
+    bg.width=W*dpr;bg.height=H*dpr;
+    var TH=Math.round(H*1.9);
+    lay=LAYERS.map(function(L,i){return buildLayer(L,i,W,H,TH)});
+    fogC=document.createElement("canvas");fogC.width=W*2;fogC.height=Math.round(H*.5);
+    var f=fogC.getContext("2d"),r=rng(777);
+    for(var i=0;i<14;i++){
+      var cx=r()*W*2,cy=fogC.height*(.3+r()*.5),rad=W*(.18+r()*.2);
+      var g=f.createRadialGradient(cx,cy,0,cx,cy,rad);
+      g.addColorStop(0,"rgba(246,206,160,.24)");g.addColorStop(1,"rgba(246,206,160,0)");
+      f.save();f.translate(0,cy);f.scale(1,.32);f.translate(0,-cy);f.fillStyle=g;f.fillRect(cx-rad,cy-rad,rad*2,rad*2);f.restore();
+    }
+  }
+  var sc=0,tgt=0,t0=performance.now();
+  function frame(now){
+    var maxS=Math.max(document.documentElement.scrollHeight-H,1);
+    var p=Math.min(tgt/Math.min(maxS,1800),1);
+    sc+=(p-sc)*(reduce?1:.12);
+    bx.setTransform(dpr,0,0,dpr,0,0);
+    var sky=bx.createLinearGradient(0,0,0,H);
+    sky.addColorStop(0,"#241917");sky.addColorStop(.35,"#68412d");sky.addColorStop(.62,"#c57f48");sky.addColorStop(1,"#3a2418");
+    bx.fillStyle=sky;bx.fillRect(0,0,W,H);
+    /* sun climbs and drifts while scrolling */
+    var sx=W*(.9-sc*.18),sy=H*(.22-sc*.12),sr=W*.45;
+    var sun=bx.createRadialGradient(sx,sy,0,sx,sy,sr);
+    sun.addColorStop(0,"rgba(255,230,176,.95)");sun.addColorStop(.04,"rgba(255,216,152,.75)");sun.addColorStop(.25,"rgba(242,164,94,.3)");sun.addColorStop(1,"rgba(242,164,94,0)");
+    bx.fillStyle=sun;bx.fillRect(0,0,W,H);
+    var tsec=(now-t0)/1000;
+    for(var i=0;i<lay.length;i++){
+      var dy=-sc*LAYERS[i].sp*H*.62;
+      bx.drawImage(lay[i],0,dy,W,lay[i].height);
+      if(i<3&&fogC){
+        var drift=reduce?0:(tsec*(8+i*6))%(W);
+        bx.globalAlpha=.9;
+        bx.drawImage(fogC,-drift,H*(LAYERS[i].base+.0)+dy-fogC.height*.25);
+        bx.drawImage(fogC,W*2-drift,H*(LAYERS[i].base+.0)+dy-fogC.height*.25);
+        bx.globalAlpha=1;
+      }
+    }
+    /* readable dusk as the page goes down */
+    bx.fillStyle="rgba(10,7,5,"+(.12+sc*.62).toFixed(3)+")";bx.fillRect(0,0,W,H);
+    var vg=bx.createRadialGradient(W/2,H*.5,H*.3,W/2,H*.5,W*.8);
+    vg.addColorStop(0,"rgba(0,0,0,0)");vg.addColorStop(1,"rgba(8,5,3,.5)");
+    bx.fillStyle=vg;bx.fillRect(0,0,W,H);
+    /* hero text drifts and fades */
+    var hi=document.getElementById("heroIn"),y=Math.min(tgt,700);
+    hi.style.transform="translate3d(0,"+(y*.35).toFixed(1)+"px,0) scale("+(1-Math.min(y/1600,.15)).toFixed(3)+")";
+    hi.style.opacity=Math.max(0,1-y/520).toFixed(3);
+    requestAnimationFrame(frame);
+  }
+  function onScroll(){tgt=window.pageYOffset||document.documentElement.scrollTop||0}
+  window.addEventListener("scroll",onScroll,{passive:true});
+  var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(build,150)});
+  build();onScroll();requestAnimationFrame(frame);
+
+  /* lead-card landscape (static, same engine) */
+  (function(){
+    var c=document.getElementById("leadc"),w=c.clientWidth||640,h=c.clientHeight||320,d=Math.min(window.devicePixelRatio||1,2);
+    c.width=w*d;c.height=h*d;var x=c.getContext("2d");x.scale(d,d);
+    var s=x.createLinearGradient(0,0,0,h);s.addColorStop(0,"#5a3b3a");s.addColorStop(.5,"#d38a52");s.addColorStop(1,"#f0bd7c");
+    x.fillStyle=s;x.fillRect(0,0,w,h);
+    [LAYERS[0],LAYERS[1],LAYERS[2]].forEach(function(L,i){
+      var m=buildLayer(L,i,w,h,h);x.drawImage(m,0,-h*.1*(2-i)*0+h*(.05+i*.02),w,h);
+    });
+    var v=x.createLinearGradient(0,h*.55,0,h);v.addColorStop(0,"rgba(13,10,8,0)");v.addColorStop(1,"rgba(13,10,8,.7)");
+    x.fillStyle=v;x.fillRect(0,0,w,h);
+  })();
+
+  /* hero index highlights current section */
+  var links=[].slice.call(document.querySelectorAll("#idx a"));
+  function mark(){
+    var cur="";
+    ["news","channels","markets","tools"].forEach(function(id){
+      var e=document.getElementById(id);if(e&&e.getBoundingClientRect().top<H*.55)cur=id;
+    });
+    links.forEach(function(a){a.classList.toggle("on",a.dataset.s===cur)});
+  }
+  window.addEventListener("scroll",mark,{passive:true});mark();
+})();
+</script>

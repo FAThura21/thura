@@ -1,0 +1,100 @@
+{
+  "max_age_days": 7,
+  "keep_days": 30,
+  "sources": [
+    {
+      "key": "ar",
+      "name": "العربية السعودية",
+      "lang": "ar",
+      "feed_urls": [
+        "https://www.alarabiya.net/feed/rss2/ar.xml",
+        "https://www.alarabiya.net/feed/rss2/ar/saudi-today.xml"
+      ],
+      "url_contains": "/saudi-today/",
+      "limit": 8,
+      "enabled": true,
+      "note": "Saudi section of Al Arabiya only. Confirm the section feed URL at https://www.alarabiya.net/rss if the second URL does not respond."
+    },
+    {
+      "key": "ar_markets",
+      "name": "العربية الأسواق",
+      "lang": "ar",
+      "feed_urls": [
+        "https://www.alarabiya.net/feed/rss2/ar.xml",
+        "https://www.alarabiya.net/feed/rss2/ar/aswaq.xml"
+      ],
+      "url_contains": "/aswaq/",
+      "limit": 6,
+      "enabled": true,
+      "note": "Al Arabiya markets section, shown in the right-hand wire list."
+    },
+    {
+      "key": "aj",
+      "name": "الجزيرة",
+      "lang": "ar",
+      "feed_urls": ["https://www.aljazeera.net/aljazeerarss/a7c186be-1baa-4bd4-9d80-a84db769f779/73d0e1b4-532f-45ef-b135-bfdfff5a1c05"],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "sk",
+      "name": "سكاي نيوز عربية",
+      "lang": "ar",
+      "feed_urls": ["https://www.skynewsarabia.com/rss.xml"],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "ab",
+      "name": "الشرق مع بلومبرغ",
+      "lang": "ar",
+      "feed_urls": ["https://asharqbusiness.com/rss.xml"],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "bb",
+      "name": "Bloomberg",
+      "lang": "en",
+      "feed_urls": [
+        "https://feeds.bloomberg.com/markets/news.rss",
+        "https://feeds.bloomberg.com/business/news.rss"
+      ],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "cnbc",
+      "name": "CNBC",
+      "lang": "en",
+      "feed_urls": ["https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114"],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "mw",
+      "name": "MarketWatch",
+      "lang": "en",
+      "feed_urls": ["https://feeds.content.dowjones.io/public/rss/mw_topstories"],
+      "limit": 8,
+      "enabled": true
+    },
+    {
+      "key": "cnn",
+      "name": "CNN",
+      "lang": "en",
+      "feed_urls": ["http://rss.cnn.com/rss/edition_business.rss"],
+      "limit": 6,
+      "enabled": true,
+      "note": "CNN's public RSS has been frozen since 2023, so only items newer than keep_days are stored. For fresh CNN headlines use a news API (see README)."
+    },
+    {
+      "key": "nyt",
+      "name": "نيويورك تايمز",
+      "lang": "en",
+      "feed_urls": ["https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"],
+      "limit": 6,
+      "enabled": true
+    }
+  ]
+}

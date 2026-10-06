@@ -1,0 +1,36 @@
+{
+ "max_age_days": 7,
+ "keep_days": 30,
+ "sources": [
+  {
+   "key": "ar",
+   "name": "AR",
+   "lang": "ar",
+   "feed_urls": [
+    "file:///home/claude/thura/tests/fixtures/sample.xml",
+    "file:///nonexistent.xml"
+   ],
+   "url_contains": "/saudi-today/",
+   "limit": 5
+  },
+  {
+   "key": "ar_markets",
+   "name": "ARM",
+   "lang": "ar",
+   "feed_urls": [
+    "file:///home/claude/thura/tests/fixtures/sample.xml"
+   ],
+   "url_contains": "/aswaq/",
+   "limit": 5
+  },
+  {
+   "key": "bb",
+   "name": "Bloomberg",
+   "lang": "en",
+   "feed_urls": [
+    "file:///home/claude/thura/tests/fixtures/atom.xml"
+   ],
+   "limit": 5
+  }
+ ]
+}

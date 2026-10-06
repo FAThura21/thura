@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Test</title>
+<item><title>اختبار: خبر سعودي جديد &amp; مهم</title><link>https://example.com/saudi-today/2026/10/06/a?traffic_source=rss</link><pubDate>Tue, 06 Oct 2026 08:00:00 +0300</pubDate><category>Saudi</category></item>
+<item><title>خبر من قسم الأسواق</title><link>https://example.com/aswaq/2026/10/06/b</link><pubDate>Tue, 06 Oct 2026 07:00:00 +0300</pubDate></item>
+<item><title>Old story from 2023</title><link>https://example.com/saudi-today/2023/old</link><pubDate>Tue, 18 Apr 2023 15:32:03 GMT</pubDate></item>
+</channel></rss>
